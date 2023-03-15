@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hello</title>
+</head>
+
+<h1> hello world</h1>
+
+<a href="/add/user/">添加用户</a>  <br/>
+
+{% for obj in data %}
+    {{ obj.id }}{{ obj.name}} {{ obj.age}} <a href="/delete/user/?id={{ obj.id }}">删除</a>  <br/>
+{% endfor %}
+
+</body>
+</html>
