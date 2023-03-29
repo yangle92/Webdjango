@@ -71,3 +71,34 @@ def delete_user(request):
     print(data)
     return redirect('/list/user')
 
+
+from django.forms import ModelForm
+class Modify_user_modelfrom(ModelForm):
+    class Meta:
+        model=Person
+        # fields = ['name', 'age', ]
+        fields='__all__'
+
+#      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+    def __init__(self, *args, **kwargs):
+        super(Modify_user_modelfrom, self).__init__(*args, **kwargs)
+        for field_name in self.base_fields:
+            field = self.base_fields[field_name]
+            field.widget.attrs.update({'class': "form-control", 'id': 'exampleInput'})
+
+def modify_user(request,uid):
+    '''
+    :param request: 
+    :return:
+    '''
+    data = Person.objects.filter(id=uid).first()
+    print(data)
+    if request.method == 'GET':
+        form=Modify_user_modelfrom(instance=data)
+        return render(request,'modify.html',{'form':form})
+
+    else:
+        form= Modify_user_modelfrom(request.POST,instance=data)
+        if form.is_valid():
+            form.save()
+            return redirect('/list/user')

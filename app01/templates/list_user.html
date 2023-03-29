@@ -25,7 +25,9 @@
             <th>{{ obj.get_sex_display}}</th>
             <th>{{ obj.birthday}}</th>
             <th>{{ obj.update_time}}</th>
-            <th><a href="/delete/user/?id={{ obj.id }}">删除</a></th>
+            <th><div class="alert alert-warning" role="alert"  style="width:50%;white-space: nowrap" ><a href="/modify/user/{{ obj.id }}">修改</a> </div>
+                <div class="alert alert-danger" role="alert" style="width: 50%;white-space: nowrap"><a href="/delete/user/?id={{ obj.id }}">删除</a></div>
+            </th>
         </tr>
       {% endfor %}
 

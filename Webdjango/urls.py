@@ -24,5 +24,6 @@ urlpatterns = [
     path('list/user/',views.list_user),
     path('add/user/',views.add_user),
     path('delete/user/',views.delete_user),
+    path('modify/user/<int:uid>/',views.modify_user),
 
 ]
