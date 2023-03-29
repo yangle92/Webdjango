@@ -3,14 +3,15 @@ from django.shortcuts import render,HttpResponse,redirect
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Welcome to mysite")
-
+    # return HttpResponse("Welcome to mysite")
+    return render(request,'index.html')
 def test(request):
     # data=['hello','world']
     # return render(request,'test.html',{'data':data})
 
     data={'k1':'hello','k2':'world'}
     return render(request,'test.html',{'data':data})
+
 
 from app01.models import Person
 def ormtest(request):
@@ -26,18 +27,36 @@ def ormtest(request):
     data=Person.objects.all()
     return render(request, 'test.html', {'data': data})
 
+
 def list_user(request):
     data = Person.objects.all()
     return render(request, 'list_user.html', {'data': data})
 
+
+#####添加用户，这里基于modelform来处理
+# Django ModelForm修改默认的控件属性
+# https://blog.csdn.net/weixin_30254435/article/details/99050157
+from django.forms import ModelForm
+class Add_user_modelfrom(ModelForm):
+    class Meta:
+        model=Person
+        # fields = ['name', 'age', ]
+        fields='__all__'
+
+#      <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+    def __init__(self, *args, **kwargs):
+        super(Add_user_modelfrom, self).__init__(*args, **kwargs)
+        for field_name in self.base_fields:
+            field = self.base_fields[field_name]
+            field.widget.attrs.update({'class': "form-control", 'id': 'exampleInput'})
+
 def add_user(request):
     print(request.method)
     if request.method == 'GET':
-        return render(request,'add_user.html')
-    name=request.POST.get('user')
-    age=request.POST.get('age')
-    print(f'{ name } {age }')
-    Person.objects.create(name=name,age=age)
+        form=Add_user_modelfrom()
+        return render(request,'add_user.html',{'form':form})
+    form=Add_user_modelfrom(request.POST)
+    form.save()
     return redirect('/list/user/')
 
 def delete_user(request):

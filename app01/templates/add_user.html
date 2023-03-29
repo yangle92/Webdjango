@@ -1,17 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>hello</title>
-</head>
 
-<h1> hello world</h1>
-<body>
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+
+
 <form method="post"  action="/add/user/">
     {% csrf_token %}
-    <input type="text" name="user" placeholder="用户名">
-    <input type="text" name="age" placeholder="年龄">
-    <input type="submit" value="Submit" />
+    {% for obj in form %}
+
+            <div class="bs-example" data-example-id="basic-forms">
+    <form>
+
+      <div class="form-group">
+        <label for="exampleInput">{{ obj.label }}</label>
+        {{ obj }}
+
+      </div>
+    {% endfor %}
+      <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+
+
+
 </form>
-</body>
-</html>
+{% endblock %}
+

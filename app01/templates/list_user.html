@@ -1,31 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>hello</title>
-</head>
+{% extends 'layout.html' %}
 
-<h1> hello world</h1>
-
+{% block content %}
 <a href="/add/user/">添加用户</a>  <br/>
+    <div class="bs-example" data-example-id="simple-table">
+    <table class="table">
+      <caption>Optional table caption.</caption>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>姓名</th>
+          <th>年龄</th>
+          <th>性别</th>
+            <th>出生日期</th>
+            <th>更新时间</th>
+            <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for obj in data %}
+        <tr>
+          <th scope="row">{{ obj.id }}</th>
+            <th>{{ obj.name}}</th>
+            <th>{{ obj.age}}</th>
+            <th>{{ obj.get_sex_display}}</th>
+            <th>{{ obj.birthday}}</th>
+            <th>{{ obj.update_time}}</th>
+            <th><a href="/delete/user/?id={{ obj.id }}">删除</a></th>
+        </tr>
+      {% endfor %}
 
-<table  border="1">
-<tr>
-    <th>ID</th>
-    <th>name</th>
-    <th>age</th>
-    <th>Link</th>
-</tr>
+      </tbody>
+    </table>
+  </div>
 
-{% for obj in data %}
-    <tr>
-    <th>{{ obj.id }}</th>
-    <th>{{ obj.name}}</th>
-    <th>{{ obj.age}}</th>
-    <th><a href="/delete/user/?id={{ obj.id }}">删除</a></th>
-    </tr>
-{% endfor %}
 
 </table>
-</body>
-</html>
+
+
+
+{% endblock %}
+
