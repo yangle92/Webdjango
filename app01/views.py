@@ -1,5 +1,8 @@
 from django.shortcuts import render,HttpResponse,redirect
+from django.utils.safestring import mark_safe
+from django.core.paginator import Paginator
 
+from app01.models import Person
 # Create your views here.
 
 def index(request):
@@ -11,9 +14,6 @@ def test(request):
 
     data={'k1':'hello','k2':'world'}
     return render(request,'test.html',{'data':data})
-
-
-from app01.models import Person
 def ormtest(request):
     '''
     :param request: 
@@ -26,11 +26,34 @@ def ormtest(request):
     '''
     data=Person.objects.all()
     return render(request, 'test.html', {'data': data})
-
-
 def list_user(request):
-    data = Person.objects.all()
-    return render(request, 'list_user.html', {'data': data})
+
+    if request.method == 'GET':
+        # 获取所有数据
+        objects = Person.objects.all()
+        # 每页10条数据
+        paginator = Paginator(objects, 5)
+        # 获取第一页的数据
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        return render(request, 'list_user.html', {'page_obj': page_obj})
+
+    print(request.POST)
+    data=request.POST.get('jump-page')
+    print(data)
+    print('*******************')
+    # 获取所有数据
+    objects = Person.objects.all()
+    # 每页10条数据
+    paginator = Paginator(objects, 5)
+    # 获取第一页的数据
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'list_user.html', {'page_obj': page_obj})
+
+
+    # return render(request, 'list_user.html', {'data': data,'page_string':page_string,'total_page':total_page})
 
 
 #####添加用户，这里基于modelform来处理
